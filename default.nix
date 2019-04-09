@@ -5,12 +5,17 @@
 # https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/python.md
 #
 
-# with import <nixpkgs> { config = {
-#   packageOverrides = pkgs: {
-#     uwsgi = pkgs.uwsgi.override { xlibs = null; }; # how to make this enable pcre?
-#   };
-# };};
-with import <nixpkgs> {};
+let
+  pkgs_rev = "7f35ed9df40f12a79a242e6ea79b8a472cf74d42"; # (19.03 beta)
+  nixpkgs = builtins.fetchTarball {
+    name = "nixpkgs-${builtins.substring 0 6 pkgs_rev}";
+    url = "https://github.com/NixOS/nixpkgs/archive/${pkgs_rev}.tar.gz";
+    # Hash obtained using `nix-prefetch-url --unpack <url>`
+    sha256 = "1wr6dzy99rfx8s399zjjjcffppsbarxl2960wgb0xjzr7v65pikz";
+  };
+in
+# with import <nixpkgs> {};
+with import nixpkgs {};
 with pkgs.python36Packages;
 stdenv.mkDerivation {
   name = "impurePythonEnv";
@@ -30,6 +35,7 @@ stdenv.mkDerivation {
     #
     gcc6
     glibcLocales # for click+python3
+    libxml2
     ncurses # needed by uWSGI
     openssl
     pcre
@@ -45,15 +51,18 @@ stdenv.mkDerivation {
     virtualenv venv
     export PATH=$PWD/venv/bin:$PATH
     export PYTHONPATH=$PWD
+    export LD_LIBRARY_PATH=${libxml2}/lib:${gcc6.cc.lib}/lib:$LD_LIBRARY_PATH
+    export C_INCLUDE_PATH="${libxml2}/include/libxml2"
     pip install pipenv
     pipenv --three install --dev
-    export LD_LIBRARY_PATH=${gcc6.cc.lib}/lib:$LD_LIBRARY_PATH
     export FLASK_APP=app.py
     export FLASK_DEBUG=1
     source private_vars.sh
     source $(pipenv --venv)/bin/activate
   '';
 }
+
+# For C_INCLUDE_PATH: :${libxslt}/include/libxslt
 
 #    
 #
