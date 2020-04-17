@@ -160,10 +160,11 @@ def get_records_from_indexer(
             [
                 {
                     "host": current_app.config.get("ELASTICSEARCH_HOST"),
+                    "index": current_app.config.get("ELASTICSEARCH_INDEX"),
                     "port": current_app.config.get("ELASTICSEARCH_PORT"),
                     "use_ssl": current_app.config.get("ELASTICSEARCH_SSL"),
                     "http_auth": None,
-                    "verify_certs": True,
+                    "verify_certs": current_app.config.get("ELASTICSEARCH_VERIFY"),
                 }
             ],
             connection_class=Urllib3HttpConnection,

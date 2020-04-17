@@ -42,6 +42,11 @@ class Config:
     ELASTICSEARCH_SSL = (
         os.environ.get("ELASTICSEARCH_SSL", "false").lower() == "true"
     )
+    ELASTICSEARCH_INDEX = os.environ.get("ELASTICSEARCH_INDEX", "arxiv")
+    ELASTICSEARCH_USER = os.environ.get("ELASTICSEARCH_USER", None)
+    ELASTICSEARCH_PASSWORD = os.environ.get("ELASTICSEARCH_PASSWORD", None)
+    ELASTICSEARCH_VERIFY = os.environ.get("ELASTICSEARCH_VERIFY", "true")
+    """Indicates whether SSL certificate verification for ES should be enforced."""
 
 
 class Production(Config):

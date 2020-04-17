@@ -1,0 +1,35 @@
+name: feed
+namespace: development
+loglevel: 40
+
+image:
+  tag: "latest"
+
+scaling:
+  replicas: 1
+
+elasticsearch:
+  es_cluster_name: arxiv
+  host: changeme
+  port: "443"
+  proto: "https"
+  user: ""
+  password: ""
+  verify: "true"
+  index: "arxiv0.3" # currently used for development
+
+redis:
+  port: "6379"
+  host: changeme
+  db: "0"
+
+
+deployment:
+  name: feed
+
+ingress:
+  name: feed
+  host: "development.arxiv.org"
+  path: /feed
+
+base_server: "arxiv.org"
