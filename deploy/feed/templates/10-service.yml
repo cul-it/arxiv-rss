@@ -1,0 +1,19 @@
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: 'true'
+  name: "{{ default "feed" .Values.name }}"
+  labels:
+    subsystem: "{{ .Values.labels.subsystem }}"
+    container: "{{ default "feed" .Values.deployment.name }}"
+    service-group: feed
+    log-style: uwsgi
+    env: "{{ .Values.namespace }}"
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 8000
+  selector:
+    subsystem: "{{ .Values.labels.subsystem }}"
+    container: "{{ default "feed" .Values.name }}"

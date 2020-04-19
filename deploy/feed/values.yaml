@@ -8,6 +8,9 @@ image:
 scaling:
   replicas: 1
 
+labels:
+  subsystem: feed-service
+
 elasticsearch:
   es_cluster_name: arxiv
   host: changeme
