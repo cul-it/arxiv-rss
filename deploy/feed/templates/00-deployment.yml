@@ -6,7 +6,7 @@ metadata:
   labels:
     subsystem: "{{ .Values.labels.subsystem }}"
     container: "{{ default "search-api" .Values.deployment.name }}"
-    service-group: api
+    service-group: feed
     log-style: uwsgi
     env: "{{ .Values.namespace }}"
 spec:
@@ -15,8 +15,8 @@ spec:
     metadata:
       labels:
         subsystem: "{{ .Values.labels.subsystem }}"
-        container: "{{ default "feed .Values.deployment.name }}"
-        service-group: api
+        container: "{{ default "feed" .Values.deployment.name }}"
+        service-group: feed
         log-style: uwsgi
       # annotations:
       #   prometheus.io/scrape: 'true'
