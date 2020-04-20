@@ -1,4 +1,4 @@
-# arxiv/classic-api
+# arxiv/feed
 #
 # Defines the runtime for the arXiv feed service, which provides an RSS
 # feed backed by Elasticsearch.
