@@ -32,6 +32,7 @@ ADD Pipfile.lock /opt/arxiv/
 RUN pip install -U pip pipenv
 RUN pipenv install
 ADD app.py /opt/arxiv/
+ADD feed /opt/arxiv/feed
 ADD wsgi-feed.py config/uwsgi-feed.ini /opt/arxiv/
 
 
