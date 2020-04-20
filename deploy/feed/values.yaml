@@ -26,6 +26,8 @@ redis:
   host: changeme
   db: "0"
 
+feed:
+  num_days: "30"
 
 deployment:
   name: feed

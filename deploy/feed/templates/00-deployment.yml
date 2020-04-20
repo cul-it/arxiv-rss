@@ -36,12 +36,12 @@ spec:
           value: "{{ .Values.namespace }}"
         - name: LOGLEVEL
           value: "{{ default "40" .Values.loglevel }}"
-        - name: ELASTICSEARCH_HOST
+        - name: ELASTICSEARCH_SERVICE_HOST
           value: "{{ default "elasticsearch" .Values.elasticsearch.host }}"
-        - name: ELASTICSEARCH_PORT
+        - name: ELASTICSEARCH_SERVICE_PORT
           value: "{{ default "9200" .Values.elasticsearch.port }}"
-        # - name: ELASTICSEARCH_SERVICE_PORT_{{ default "9200" .Values.elasticsearch.port }}_PROTO
-        #   value: "{{ default "http" .Values.elasticsearch.proto }}"
+        - name: ELASTICSEARCH_SERVICE_PORT_{{ default "9200" .Values.elasticsearch.port }}_PROTO
+          value: "{{ default "http" .Values.elasticsearch.proto }}"
         - name: ELASTICSEARCH_INDEX
           value: "{{ default "arxiv" .Values.elasticsearch.index }}"
         - name: ELASTICSEARCH_USER
@@ -56,6 +56,8 @@ spec:
           value: "{{ default "6379" .Values.redis.port }}"
         - name: CACHE_REDIS_DB
           value: "{{ default "0" .Values.redis.db }}"
+        - name: FEED_NUM_DAYS
+          value: "{{ default "30" .Values.feed.num_days }}"
         resources:
           limits:
             cpu: 300m

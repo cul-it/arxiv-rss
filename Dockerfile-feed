@@ -1,0 +1,41 @@
+# arxiv/classic-api
+#
+# Defines the runtime for the arXiv feed service, which provides an RSS
+# feed backed by Elasticsearch.
+
+FROM arxiv/base:0.16.6
+
+WORKDIR /opt/arxiv
+
+ENV LC_ALL en_US.utf8
+ENV LANG en_US.utf8
+ENV LOGLEVEL 40
+ENV FLASK_DEBUG 1
+ENV FLASK_APP /opt/arxiv/app.py
+ENV PATH "/opt/arxiv:${PATH}"
+ENV ELASTICSEARCH_SERVICE_HOST 127.0.0.1
+ENV ELASTICSEARCH_SERVICE_PORT 9200
+ENV ELASTICSEARCH_SERVICE_PORT_9200_PROTO http
+ENV ELASTICSEARCH_INDEX arxiv
+ENV ELASTICSEARCH_USER elastic
+ENV ELASTICSEARCH_PASSWORD changeme
+ENV METADATA_ENDPOINT https://arxiv.org/docmeta_bulk/
+
+ENV FEED_NUM_DAYS 30
+ENV CACHE_REDIS_HOST changeme
+ENV CACHE_REDIS_PORT 6379
+ENV CACHE_REDIS_DB 0
+
+# Add Python application and configuration.
+ADD Pipfile /opt/arxiv/
+ADD Pipfile.lock /opt/arxiv/
+RUN pip install -U pip pipenv
+RUN pipenv install
+ADD app.py /opt/arxiv/
+ADD wsgi-feed.py config/uwsgi-feed.ini /opt/arxiv/
+
+
+EXPOSE 8000
+
+ENTRYPOINT ["pipenv", "run"]
+CMD ["uwsgi", "--ini", "/opt/arxiv/uwsgi-feed.ini"]

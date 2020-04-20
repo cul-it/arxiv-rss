@@ -11,6 +11,7 @@ class Config:
     TESTING = False
     VERSION = "0.3"
     BASE_SERVER = os.environ.get("BASE_SERVER", "arxiv.org")
+    APPLICATION_ROOT = os.environ.get("APPLICATION_ROOT", "/")
 
     METADATA_ENDPOINT = os.environ.get(
         "METADATA_ENDPOINT", f"https://{BASE_SERVER}"
@@ -37,11 +38,13 @@ class Config:
     CACHE_REDIS_DB = int(os.environ.get("CACHE_REDIS_DB", "0"))
 
     # ElasticSearch
-    ELASTICSEARCH_HOST = os.environ.get("ELASTICSEARCH_HOST", "127.0.0.1")
-    ELASTICSEARCH_PORT = int(os.environ.get("ELASTICSEARCH_PORT", "9200"))
-    ELASTICSEARCH_SSL = (
-        os.environ.get("ELASTICSEARCH_SSL", "false").lower() == "true"
+    ELASTICSEARCH_SERVICE_HOST = os.environ.get("ELASTICSEARCH_SERVICE_HOST", "127.0.0.1")
+    ELASTICSEARCH_SERVICE_PORT = os.environ.get(
+        "ELASTICSEARCH_SERVICE_PORT", "9200"
     )
+    _proto_key = "ELASTICSEARCH_SERVICE_PORT_%s_PROTO" % ELASTICSEARCH_SERVICE_PORT
+    locals()[_proto_key] = os.environ.get(_proto_key, "http")
+
     ELASTICSEARCH_INDEX = os.environ.get("ELASTICSEARCH_INDEX", "arxiv")
     ELASTICSEARCH_USER = os.environ.get("ELASTICSEARCH_USER", None)
     ELASTICSEARCH_PASSWORD = os.environ.get("ELASTICSEARCH_PASSWORD", None)

@@ -155,16 +155,26 @@ def get_records_from_indexer(
             sub_queries.append(q)
         q = Q("bool", should=sub_queries)
 
+        # TODO: refactor per arxiv-search session model
+        host = current_app.config.get("ELASTICSEARCH_SERVICE_HOST", "localhost")
+        port = current_app.config.get("ELASTICSEARCH_SERVICE_PORT", "9200")
+        scheme = current_app.config.get(
+            "ELASTICSEARCH_SERVICE_PORT_%s_PROTO" % port, "http"
+        )
+        use_ssl = True if scheme == "https" else False
+        index = current_app.config.get("ELASTICSEARCH_INDEX", "arxiv")
+        verify = current_app.config.get("ELASTICSEARCH_VERIFY")
         # Connect to the indexer
         es = Elasticsearch(
             [
                 {
-                    "host": current_app.config.get("ELASTICSEARCH_HOST"),
-                    "index": current_app.config.get("ELASTICSEARCH_INDEX"),
-                    "port": current_app.config.get("ELASTICSEARCH_PORT"),
-                    "use_ssl": current_app.config.get("ELASTICSEARCH_SSL"),
+                    "host": host,
+                    "index": index,
+                    "port": port,
+                    "scheme": scheme,
+                    "use_ssl": use_ssl,
                     "http_auth": None,
-                    "verify_certs": current_app.config.get("ELASTICSEARCH_VERIFY"),
+                    "verify_certs": verify,
                 }
             ],
             connection_class=Urllib3HttpConnection,
