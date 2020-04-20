@@ -1,0 +1,7 @@
+name: feed
+version: 0.0.0
+appVersion: 0.0.0
+description: ES-backed feed service for arXiv-NG.
+sources:
+  - https://github.com/arxiv/arxiv-feed
+engine: gotpl
