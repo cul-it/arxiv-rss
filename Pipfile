@@ -23,4 +23,4 @@ pytest-cov = "==2.8.1"
 pytest-flask = "==1.0.0"
 
 [requires]
-python_version = "3.7"
+python_version = "3.6"
